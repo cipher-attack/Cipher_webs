@@ -1,3 +1,4 @@
+
 import { Language, SocialLink, ServiceItem, Vulnerability, WorkflowStep } from './types';
 import { Github, Twitter, Linkedin, Youtube, ExternalLink, Hash, Shield, Terminal, Globe, Lock, Cpu, Code, Database, Wifi, Flag, Box } from 'lucide-react';
 import React from 'react';
@@ -53,7 +54,7 @@ export const TECH_STACK = [
 
 export const VULNERABILITIES: Vulnerability[] = [
   {
-    id: 'CVE-2024-3094',
+    id: 'CVE-2025-3094',
     severity: 'CRITICAL',
     score: 10.0,
     description: 'Malicious backdoor discovered in XZ Utils compression library allowing unauthorized remote access.',
@@ -61,15 +62,15 @@ export const VULNERABILITIES: Vulnerability[] = [
     date: '2024-03-29'
   },
   {
-    id: 'CVE-2024-21413',
+    id: 'CVE-2025-21413',
     severity: 'CRITICAL',
     score: 9.8,
     description: 'Microsoft Outlook Moniker Link vulnerability allowing RCE without user interaction.',
     affected: 'Microsoft Office / Outlook',
-    date: '2024-02-13'
+    date: '2025-02-13'
   },
   {
-    id: 'CVE-2024-23897',
+    id: 'CVE-2025-23897',
     severity: 'HIGH',
     score: 8.6,
     description: 'Jenkins arbitrary file read vulnerability via CLI command parsing.',
@@ -77,12 +78,12 @@ export const VULNERABILITIES: Vulnerability[] = [
     date: '2024-01-24'
   },
   {
-    id: 'CVE-2023-4863',
+    id: 'CVE-2024-4863',
     severity: 'HIGH',
     score: 8.8,
     description: 'Heap buffer overflow in libwebp affecting Chrome, Firefox, and other software.',
     affected: 'Web Browsers & Image Tools',
-    date: '2023-09-12'
+    date: '2024-09-12'
   }
 ];
 
@@ -449,7 +450,7 @@ export const CONTENT = {
       subtitle: "From reconnaissance to reporting, we follow a strict military-grade engagement protocol."
     },
     footer: {
-      rights: "© 2024 CIPHER. All rights reserved.",
+      rights: "© 2025 CIPHER. All rights reserved.",
       builtBy: "Architected by"
     },
     ai: {
@@ -480,7 +481,7 @@ export const CONTENT = {
       subtitle: "ከቅድመ-ጥናት እስከ ሪፖርት አቀራረብ፣ ጥብቅ ወታደራዊ ደረጃ ያለው የውል ስምምነት ፕሮቶኮልን እንከተላለን።"
     },
     footer: {
-      rights: "© 2024 ሳይፈር። መብቱ በህግ የተጠበቀ ነው።",
+      rights: "© 2025 ሳይፈር። መብቱ በህግ የተጠበቀ ነው።",
       builtBy: "የተገነባው በ"
     },
     ai: {
