@@ -15,7 +15,7 @@ import { ServiceWorkflow } from './components/ServiceWorkflow';
 import { VulnerabilityTicker } from './components/VulnerabilityTicker';
 import { Language, PageView } from './types';
 import { CONTENT, CREATOR_NAME, SOCIAL_LINKS, TECH_STACK } from './constants';
-import { ArrowRight, Terminal as TerminalIcon, Command } from 'lucide-react';
+import { ArrowRight, Terminal as TerminalIcon, Command, Search } from 'lucide-react';
 
 function App() {
   const [lang, setLang] = useState<Language>(Language.EN);
@@ -73,7 +73,7 @@ function App() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-40 border-b border-white/10 glass backdrop-blur-md bg-black/20 shadow-lg transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <button onClick={() => navigateTo('home')} className="hover:opacity-80 transition-opacity drop-shadow-md text-white">
+          <button onClick={() => navigateTo('home')} className="hover:opacity-80 transition-opacity drop-shadow-md text-white shrink-0">
              <Logo className="w-12 h-12" />
           </button>
           
@@ -83,7 +83,8 @@ function App() {
             <button onClick={() => navigateTo('tools')} className={`text-white/80 hover:text-white transition-colors drop-shadow-sm ${view === 'tools' ? 'font-bold text-white text-shadow-glow' : ''}`}>{t.nav.tools}</button>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Desktop CMD Button */}
             <button 
               onClick={() => setIsCmdOpen(true)}
               className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/20 bg-white/10 text-xs text-white/80 font-mono hover:bg-white/20 hover:text-white transition-all backdrop-blur-sm shadow-[0_0_10px_rgba(255,255,255,0.1)]"
@@ -91,6 +92,16 @@ function App() {
               <Command size={12} />
               <span>Ctrl K</span>
             </button>
+            
+            {/* Mobile CMD Button (Search Icon) */}
+            <button 
+              onClick={() => setIsCmdOpen(true)}
+              className="flex md:hidden p-2 rounded-full border border-white/10 bg-white/5 text-white hover:bg-white/20 transition-all"
+              aria-label="Open Command Palette"
+            >
+              <Search size={18} />
+            </button>
+
             <ThemeToggle />
             <LanguageSwitcher currentLang={lang} onToggle={setLang} />
           </div>
