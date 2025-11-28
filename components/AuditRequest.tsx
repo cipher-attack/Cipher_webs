@@ -41,7 +41,7 @@ export const AuditRequest: React.FC<Props> = ({ onBack, lang }) => {
             {step < 3 ? (
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold font-mono text-green-500">> INITIATE_SECURITY_AUDIT</h2>
+                  <h2 className="text-2xl font-bold font-mono text-green-500">&gt; INITIATE_SECURITY_AUDIT</h2>
                   <p className="text-secondary text-sm">Please provide target details for preliminary reconnaissance.</p>
                 </div>
 
@@ -95,7 +95,7 @@ export const AuditRequest: React.FC<Props> = ({ onBack, lang }) => {
                   type="submit" 
                   className="w-full bg-white text-black font-bold font-mono py-4 rounded hover:bg-green-400 transition-colors flex items-center justify-center gap-2"
                 >
-                  <span className="animate-pulse">></span> EXECUTE_REQUEST
+                  <span className="animate-pulse">&gt;</span> EXECUTE_REQUEST
                 </button>
               </form>
             ) : (
