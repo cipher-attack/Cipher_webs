@@ -145,10 +145,10 @@ export const ServiceWorkflow: React.FC<Props> = ({ lang }) => {
                         <span>root@target:~#</span>
                      </div>
                      <div className="space-y-1">
-                        <p>> initiating exploit...</p>
-                        <p>> bypassing firewall [OK]</p>
-                        <p>> injecting payload...</p>
-                        <p className="animate-pulse">> access granted_</p>
+                        <p>&gt; initiating exploit...</p>
+                        <p>&gt; bypassing firewall [OK]</p>
+                        <p>&gt; injecting payload...</p>
+                        <p className="animate-pulse">&gt; access granted_</p>
                      </div>
                   </div>
                )}
