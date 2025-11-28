@@ -9,7 +9,7 @@ export const APP_NAME = "CIPHER";
 export const SOCIAL_LINKS: SocialLink[] = [
   { platform: 'Telegram', url: 'https://t.me/cipher_attacks', icon: 'send' },
   { platform: 'X (Twitter)', url: 'https://x.com/Cipher_attacks', icon: 'twitter' },
-  { platform: 'YouTube', url: 'https://www.youtube.com/@cipher-atack', icon: 'youtube' },
+  { platform: 'YouTube', url: 'https://www.youtube.com/@cipher-attack', icon: 'youtube' },
   { platform: 'Pinterest', url: 'https://pin.it/3R6Nz', icon: 'pin' },
   { platform: 'GitHub', url: 'https://github.com/cipher-attack', icon: 'github' },
   { platform: 'LinkedIn', url: 'https://et.linkedin.com/in/cipher-attack-93582433b', icon: 'linkedin' },
