@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface LogoProps {
@@ -8,7 +9,7 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({ className = "w-10 h-10", showText = true }) => {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <div className="relative flex items-center justify-center aspect-square h-full">
+      <div className="relative flex items-center justify-center aspect-square h-full shrink-0">
         <svg 
           viewBox="0 0 100 100" 
           className="w-full h-full text-current filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]"
@@ -29,7 +30,9 @@ export const Logo: React.FC<LogoProps> = ({ className = "w-10 h-10", showText = 
         </svg>
       </div>
       {showText && (
-        <span className="font-mono text-xl font-bold tracking-[0.2em] text-current">CIPHER<span className="text-xs align-top ml-1 opacity-50">®</span></span>
+        <span className="font-mono text-xl font-bold tracking-[0.2em] text-current whitespace-nowrap hidden sm:inline-block">
+          CIPHER<span className="text-xs align-top ml-1 opacity-50">®</span>
+        </span>
       )}
     </div>
   );
